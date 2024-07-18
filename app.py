@@ -91,6 +91,8 @@ def lambda_handler(event, context):
             return json.dumps({"error": "Query is required"})
 
         result = fetch_data_load_chain(query)
+        print ("Final")
+        print (result)
         return json.dumps({"message": result})
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
