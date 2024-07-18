@@ -75,7 +75,7 @@ def fetch_data_load_chain(query):
         answer = chain.run(input_documents=context, question=query)
         # answer = chaint.run(input_documents=context, question=query)
         print(answer)
-        return answer
+        return {"message": answer}
     except Exception as e:
         print(f"Error: {e}")
         return ({"error": str(e)}), 500
@@ -95,7 +95,7 @@ def lambda_handler(event, context):
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(result)
+            "body": json.dumps({"message": result})
         }
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
