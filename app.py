@@ -75,7 +75,7 @@ def fetch_data_load_chain(query):
         answer = chain.run(input_documents=context, question=query)
         # answer = chaint.run(input_documents=context, question=query)
         print(answer)
-        return ({"message": answer}), 200
+        return answer
     except Exception as e:
         print(f"Error: {e}")
         return ({"error": str(e)}), 500
@@ -90,7 +90,7 @@ def lambda_handler(event, context):
         if not query:
             return json.dumps({"error": "Query is required"})
 
-        result, status_code = fetch_data_load_chain(query)
+        result = fetch_data_load_chain(query)
         return json.dumps({"message": result})
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
