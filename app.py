@@ -82,9 +82,11 @@ def fetch_data_load_chain(query):
     
 def lambda_handler(event, context):
     try:
-        # Extract the query parameter from the path
-        query = event['pathParameters']['query']
-        
+
+        # Extract the path parameter from the event
+        path = event.get('pathParameters', {}).get('proxy', '')
+        query = path.lstrip('/')
+        print(query)
         if not query:
             return json.dumps({"error": "Query is required"})
 
