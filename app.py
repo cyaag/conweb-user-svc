@@ -87,10 +87,10 @@ def lambda_handler(event, context):
         query = body.get('query', '')
         
         if not query:
-            return {"statusCode": 400, "body": json.dumps({"error": "Query is required"})}
+            return json.dumps({"message": "No Query found"})
 
         result, status_code = fetch_data_load_chain(query)
-        return {"statusCode": status_code, "body": json.dumps(result)}
+        return json.dumps({"message": result})
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
         return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
