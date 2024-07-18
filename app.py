@@ -89,11 +89,18 @@ def lambda_handler(event, context):
         print(query)
         if not query:
             return json.dumps({"error": "Query is required"})
-
         result = fetch_data_load_chain(query)
         print ("Final")
         print (result)
-        return json.dumps({"message": result})
+        return {
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps(result)
+        }
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": str(e)})
+        }
