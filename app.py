@@ -82,12 +82,11 @@ def fetch_data_load_chain(query):
     
 def lambda_handler(event, context):
     try:
-        # Assuming the query is passed in the event body as JSON
-        body = json.loads(event['body'])
-        query = body.get('query', '')
+        # Extract the query parameter from the path
+        query = event['pathParameters']['query']
         
         if not query:
-            return json.dumps({"message": "No Query found"})
+            return json.dumps({"error": "Query is required"})
 
         result, status_code = fetch_data_load_chain(query)
         return json.dumps({"message": result})
