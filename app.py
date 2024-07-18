@@ -95,7 +95,7 @@ def lambda_handler(event, context):
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"message": result})
+            "body": json.dumps(result)
         }
     except Exception as e:
         print(f"Error in lambda_handler: {e}")
