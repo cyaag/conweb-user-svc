@@ -6,7 +6,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_pinecone import PineconeVectorStore
 import pinecone
 from pinecone import Pinecone, ServerlessSpec
-from flask import Flask, jsonify, request
+import json
 
 # app = Flask(__name__)
 
@@ -75,17 +75,22 @@ def fetch_data_load_chain(query):
         answer = chain.run(input_documents=context, question=query)
         # answer = chaint.run(input_documents=context, question=query)
 
-        return jsonify({"message": answer}), 200
+        return ({"message": answer}), 200
     except Exception as e:
         print(f"Error: {e}")
-        return jsonify({"error": str(e)}), 500
+        return ({"error": str(e)}), 500
     
 def lambda_handler(event, context):
-    print(event)
-    # logging.info("Event: %s", json.dumps(event))
-    # body = json.loads(event['body'])
+    try:
+        # Assuming the query is passed in the event body as JSON
+        body = json.loads(event['body'])
+        query = body.get('query', '')
+        
+        if not query:
+            return {"statusCode": 400, "body": json.dumps({"error": "Query is required"})}
 
-    # Call create_user directly with the body
-    return fetch_data_load_chain(event)
-# if __name__ == '__main__':
-#     app.run(debug=True)
+        result, status_code = fetch_data_load_chain(query)
+        return {"statusCode": status_code, "body": json.dumps(result)}
+    except Exception as e:
+        print(f"Error in lambda_handler: {e}")
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
