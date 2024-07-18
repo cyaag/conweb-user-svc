@@ -74,7 +74,7 @@ def fetch_data_load_chain(query):
         # Generate the answer
         answer = chain.run(input_documents=context, question=query)
         # answer = chaint.run(input_documents=context, question=query)
-
+        print(answer)
         return ({"message": answer}), 200
     except Exception as e:
         print(f"Error: {e}")
